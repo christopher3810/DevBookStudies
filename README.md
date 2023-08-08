@@ -6,8 +6,8 @@
 
 ![Repo Star Badge](https://img.shields.io/github/stars/christopher3810/DevBookStudies?style=for-the-badge&logo=github) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/christopher3810/DevBookStudies?style=for-the-badge) ![GitHub last commit](https://img.shields.io/github/last-commit/christopher3810/DevBookStudies?style=for-the-badge)
 
->[TIL]([christopher3810/TIL: 📝 Today I Learned (TIL) 💪💪 (github.com)](https://github.com/christopher3810/TIL)) 에서 분리한 레포지토리 입니다. \
->개발 관련 책과 관련된 스터디를 정리하고 관리하는 레포지토리 입니다. \
+>[christopher3810/TIL: 📝 Today I Learned (TIL) 💪💪 (github.com)](https://github.com/christopher3810/TIL) 에서 분리한 레포지토리 입니다. \
+>개발 관련 책과 관련된 스터디를 정리하고 관리하는 레포지토리 입니다.
 
 ## 🤩 목표
 ---
