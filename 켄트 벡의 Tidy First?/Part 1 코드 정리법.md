@@ -220,5 +220,125 @@ foo = map.computeIfAbsent("key", k -> computeFoo());
 
 
 >[!important]
->결합도 제거(decoupling) 비용 + 변경 비용 < 결합도(coupling)에 따른 비용 + 변경비용
+>결합도 제거(decoupling) 비용 + 변경 비용 < 결합도(coupling)에 따른 비용 + 변경비용.
+>
+>때때로 팀이 이미 충분한 변경을 수행하고 있는 경우 결합도를 제거하는 일이 팀원간의 잠재적 갈등으로 번질 수 있음.
+>
+>사실 이미 화가 난 상태일 수 있음. 최근에 얼마나 많이 바ㅣ었는지를 따지면서 
+>팀이 많은 변화를 받아들이기 위해서는 그 변화를 흡수할 시간이 필요함.
+>추가적인 변화를 도입하기 전에 기다리는게 필요.
 
+
+### 7. 선언과 초기화를 함께 옮기기
+---
+
+변수 초기화는 이름이 주는 의미를 좀 더 강화하며 선언과 초기화가 떨어질 경우 읽기가 힘듬.
+
+```java
+private void function(){
+	int a
+	// ...변수 a 를 사용하지 않는 코드
+	a = ...  
+}
+```
+
+초기화를 변수 선언 근처로 이동하여 문제 해결
+
+```java
+private void function(){
+	int a = ...
+	// ...변수 a 를 사용하지 않는 코드
+	// ...변수 a는 사용하고 변수 b는 사용하지 않는 코드
+	int b = ...
+	// ...변수 b를 사용하는 코드
+}
+```
+
+변수 사이에는 데이터 종속이 있음을 존중해야 하며 데이터 종속 순서도 함께 유지해야 함.
+
+두려움을 느끼지 않는 수준의 작은 수준으로 커다란 설계 변경을 점진적으로 진행할 것.
+
+### 8. 설명하는 변수
+---
+
+코드의 표현식은 계속 성장하며 작게 시작하더라도 시간의 흐름에 따라 반드시 커짐.
+
+크고 복잡한 코드 표현식을 이해하면 전체에서 일부 표현식을 추출한 후, 표현식의 의도가 드러나도록 변수 이름을 만들어 할당 하자.
+
+예제
+
+```java
+public class LoanCalculator {
+    public static void main(String[] args) {
+        // 대출 금액, 연이율, 대출 기간(년)
+        double loanAmount = 10000.0;
+        double annualInterestRate = 5.0;
+        int loanPeriodYears = 10;
+
+        // 월별 상환액 계산
+        double monthlyPayment = calculateMonthlyPayment(loanAmount, annualInterestRate, loanPeriodYears);
+    }
+
+    /**
+     * 월별 상환액을 계산하는 메서드
+     * @param principal 대출 금액
+     * @param annualRate 연이율
+     * @param years 대출 기간(년)
+     * @return 월별 상환액
+     */
+    public static double calculateMonthlyPayment(double principal, double annualRate, int years) {
+        // 월 이자율 계산
+        double monthlyInterestRate = annualRate / 100 / 12;
+
+        // 대출 기간 동안의 총 월 수
+        int totalNumberOfMonths = years * 12;
+
+        // 월별 이자율에 1을 더한 값
+        double monthlyRatePlusOneRaisedToThePowerOfTotalMonths = Math.pow(1 + monthlyInterestRate, totalNumberOfMonths);
+        
+        // 월별 상환액 계산
+        double monthlyPayment = (principal * monthlyInterestRate * monthlyRatePlusOneRaisedToThePowerOfTotalMonths)
+                                / (monthlyRatePlusOneRaisedToThePowerOfTotalMonths - 1);
+
+        return monthlyPayment;
+    }
+}
+
+```
+
+단 코드 정리에 대한 커밋과 동작 변경에 대한 커밋은 당연히 분리해야 함.
+
+### 9. 설명하는 상수
+---
+
+literal constant 즉 리터럴 상수로 사용된 곳은 상직적인 상수로 바꿉니다.
+상직적인 상수를 만드세요.
+
+>[!Note]
+> literal constant는 소스 코드에 기록된 값의 텍스트 표현을 의미.
+
+```java
+if(response.code = "404")
+{
+	//...
+}
+```
+
+```java
+PAGE_NOT_FOUND = "404"
+if(response.code = PAGE_NOT_FOUND)
+{
+	//...
+}
+```
+
+아래와 같이 같은 리터럴 상수가 두 곳 에서 나타날때 해당 의미가 일치하지 않는지를 확인해야 함. \
+아래와 같은 빈약한 의미를 갖는 것은 도움이 안됨.
+
+```java
+ONE = 1 //빈약한 의미
+//ONE은 하나가 필요할때 어디든 등장
+```
+
+### 10. 명시적인 매개변수
+---
