@@ -342,3 +342,64 @@ ONE = 1 //빈약한 의미
 
 ### 10. 명시적인 매개변수
 ---
+
+루틴에서 다루고 있는 일부 데이터가 명시적으로 전달되지 않는 경우.
+
+루틴을 나누고 앞부분에서 매개변수 값을 채운뒤 뒷 부분에서 명시적으로 전달.
+
+값을 블록으로 전달하게 되면 필요한 값이 무엇인지 정확하게 알기 힘듬.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Map<String, Integer> data = new HashMap<>();
+        data.put("a", 3);
+        data.put("b", 5);
+        data.put("multiplier", 2);
+
+        System.out.println("Result: " + calculateOperation(data));
+    }
+
+    static int calculateOperation(Map<String, Integer> data) {
+		//...
+        int sum = data.get("a") + data.get("b");
+        return sum * data.get("multiplier");
+    }
+}
+```
+
+실질 적으로 사용하는 매개변수만 적용하고 특정 루틴내에서 존재할시 해당 루틴을 분할하여 달성.
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        CalculationParams params = new CalculationParams(3, 5, 2);
+        int result = calculateResult(params.getA(), params.getB(), params.getMultiplier());
+        log.info("Result: {}", result);
+    }
+
+    static int calculateResult(int a, int b, int multiplier) {
+        return (a + b) * multiplier;
+    }
+}
+
+@Getter
+class CalculationParams {
+    private int a;
+    private int b;
+    private int multiplier;
+
+    public CalculationParams(int a, int b, int multiplier) {
+        this.a = a;
+        this.b = b;
+        this.multiplier = multiplier;
+    }
+}
+```
+
+중괄호가 여러 개로 둘러싸인 코드에서 환경 변수를 사용하는 경우.
+매개 변수를 명시적으로 드러나게 만든 다음 함수를 연쇄적으로 호출할 수 있도록 준비해볼 것.
+
+### 11. 비슷한 코드 끼리
+---
